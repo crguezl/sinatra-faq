@@ -6,7 +6,7 @@ get '/' do
 #              :from => 'susana.rodriguez.leon@gmail.com',
 #              :subject => 'Howdy, Partna!',
 #              :body => 'Hello!'
-    email = 'casiano.rodriguez.leon@gmail.com'
+    email = ARGV.shift
     pass = ARGV.shift
     Pony.mail({
       :to => email,
@@ -17,7 +17,7 @@ get '/' do
           :address              => 'smtp.gmail.com',
           :port                 => '587',
           :enable_starttls_auto => true,
-          :user_name            => 'susana.rodriguez.leon@gmail.com',
+          :user_name            => ARGV.shift,
           :password             => pass,
           :authentication       => :plain, # :plain, :login, :cram_md5, no auth by default
           :domain               => "localhost.localdomain" # the HELO domain provided by the client to the server
