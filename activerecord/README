@@ -8,6 +8,7 @@ http://screencasts.org/episodes/activerecord-with-sinatra
 See also:
     http://screencasts.org/episodes/configuring-activerecord-in-sinatra
 
+We have used sinatra-activerecord (see https://github.com/janko-m/sinatra-activerecord)
 run:
      rake -I. -T
  or in the Rakefile 

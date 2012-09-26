@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'sinatra/activerecord'
+require 'haml'
 
 set :database, 'sqlite3:///shortened_urls.db'
 
