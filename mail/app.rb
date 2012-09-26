@@ -1,11 +1,7 @@
 require 'sinatra'
 require 'pony'
-raise "provide the password" if ARGV.length.zero?
+raise "Execute:\n\t#{$0} password email_to email_from" if ARGV.length.zero?
 get '/' do
-#    Pony.mail :to => 'susana.rodriguez.leon@gmail.com',
-#              :from => 'susana.rodriguez.leon@gmail.com',
-#              :subject => 'Howdy, Partna!',
-#              :body => 'Hello!'
     email = ARGV.shift
     pass = ARGV.shift
     Pony.mail({
