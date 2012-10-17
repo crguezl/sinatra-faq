@@ -8,17 +8,125 @@ http://screencasts.org/episodes/activerecord-with-sinatra
 See also:
     http://screencasts.org/episodes/configuring-activerecord-in-sinatra
 
-We have used sinatra-activerecord (see https://github.com/janko-m/sinatra-activerecord)
-run:
-     rake -I. -T
- or in the Rakefile 
-     require './app'
+*  We have used sinatra-activerecord (see https://github.com/janko-m/sinatra-activerecord)
+  run:
+       rake -I. -T
+   or in the Rakefile 
+       require './app'
 
-It was fundamental:
+* It was fundamental:
 
       set :database, 'sqlite3:///shortened_urls.db'
 
-to run the creation migration.
+  to run the creation migration.
+
+* $ tree
+            .
+            ├── Gemfile
+            ├── Gemfile.lock
+            ├── README
+            ├── Rakefile
+            ├── app.rb
+            ├── app.rb.pdf
+            ├── db
+            │   ├── config.yml
+            │   └── migrate
+            ├── shortened_urls_bak.db
+            └── views
+                ├── index.haml
+                ├── layout.haml
+                └── success.haml
+
+*  rake db:create_migration NAME=create_shortened_urls
+
+    src/ruby/STW/sinatra-faq/url_shortener_with_active_records$ rake -T
+    rake db:create_migration  # create an ActiveRecord migration in ./db/migrate
+    rake db:migrate           # migrate the database (use version with VERSION=n)
+    rake db:rollback          # roll back the migration (use steps with STEP=n)
+
+* $ rake db:create_migration NAME=shortened_urls
+            $ tree
+            .
+            ├── Gemfile
+            ├── Gemfile.lock
+            ├── README
+            ├── Rakefile
+            ├── app.rb
+            ├── app.rb.pdf
+            ├── db
+            │   ├── config.yml
+            │   └── migrate
+            │       └── 20121017115717_shortened_urls.rb
+            ├── shortened_urls_bak.db
+            └── views
+                ├── index.haml
+                ├── layout.haml
+                └── success.haml
+
+            3 directories, 12 files
+
+* $ vi db/migrate/20121017115717_shortened_urls.rb 
+
+* $ cat db/migrate/20121017115717_shortened_urls.rb 
+          class ShortenedUrls < ActiveRecord::Migration
+            def up
+              create_table :shortened_urls do |t|
+                t.string :url
+              end
+              add_index :shortened_urls, :url
+            end
+
+            def down
+              drop_table :shortened_urls
+            end
+          end
+
+* $ tree db
+          db
+          ├── config.yml
+          └── migrate
+              └── 20121017115717_shortened_urls.rb
+
+          1 directory, 2 files
+
+* $ cat db/config.yml 
+          development:
+            adapter: sqlite3
+            encoding: utf8
+            database: shortened_urls_dev.sqlite
+
+          test:
+            adapter: sqlite3
+            encoding: utf8
+            database: shortened_urls_test.sqlite
+
+          production:
+            adapter: sqlite3
+            encoding: utf8
+            database: shortened_urls_live.sqlite
+
+* $ rake db:migrate
+            ==  ShortenedUrls: migrating =============
+            -- create_table(:shortened_urls)
+               -> 0.0016s
+            -- add_index(:shortened_urls, :url)
+               -> 0.0006s
+            ==  ShortenedUrls: migrated (0.0025s) ====
+
+* $ ls -ltr *.db
+-rw-r--r--  1 casiano  staff  24576 17 oct 12:15 shortened_urls_bak.db
+-rw-r--r--  1 casiano  staff  24576 17 oct 13:05 shortened_urls.db
+
+* $ sqlite3 shortened_urls.db 
+    SQLite version 3.7.7 2011-06-25 16:35:41
+    Enter ".help" for instructions
+    Enter SQL statements terminated with a ";"
+    sqlite> .schema
+    CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL);
+    CREATE TABLE "shortened_urls" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "url" varchar(255));
+    CREATE INDEX "index_shortened_urls_on_url" ON "shortened_urls" ("url");
+    CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version");
+    
 
         [12:25][~/Dropbox/src/ruby/STW/sinatra-faq/activerecord]$ rake db:migrate
         ==  CreateShortenedUrls: migrating ============================================
@@ -27,6 +135,12 @@ to run the creation migration.
         -- add_index(:shortened_urls, :url)
            -> 0.0003s
         ==  CreateShortenedUrls: migrated (0.0023s) ===================================
+
+* $ ruby app.rb
+      == Sinatra/1.3.3 has taken the stage on 4567 for development with backup from Thin
+      >> Thin web server (v1.4.1 codename Chromeo)
+      >> Maximum connections set to 1024
+      >> Listening on 0.0.0.0:4567, CTRL+C to stop
 
         [12:30][~/Dropbox/src/ruby/STW/sinatra-faq/activerecord]$ tree
         .
@@ -41,11 +155,12 @@ to run the creation migration.
         |     `--20120923104239_create_shortened_urls.rb
         `--shortened_urls.db
 `
+* Abre el navegador 
+
+REFERENCES
+  Simple Sinatra ActiveRecord App with Migration
+  http://www.brandon-harris.com/sinatra/2010/03/28/simple-sinatra-activerecord-app-with-migrations.html
 
 
-Simple Sinatra ActiveRecord App with Migration
-http://www.brandon-harris.com/sinatra/2010/03/28/simple-sinatra-activerecord-app-with-migrations.html
-
-
-Ruby ActiveRecord and MySQL
-http://rubylearning.com/satishtalim/ruby_activerecord_and_mysql.html
+  Ruby ActiveRecord and MySQL
+  http://rubylearning.com/satishtalim/ruby_activerecord_and_mysql.html

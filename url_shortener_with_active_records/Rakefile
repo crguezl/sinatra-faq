@@ -1,3 +1,7 @@
 $: << '.' # add current path to the search path
 require 'sinatra/activerecord/rake'
 require 'app'
+
+task :clean do
+  sh "mv shortened_urls.db tmp/"
+end
