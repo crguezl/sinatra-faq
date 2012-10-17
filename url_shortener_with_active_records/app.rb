@@ -3,6 +3,8 @@ require 'sinatra/activerecord'
 require 'haml'
 
 set :database, 'sqlite3:///shortened_urls.db'
+#set :address, 'localhost:4567'
+set :address, 'exthost.etsii.ull.es:4567'
 
 class ShortenedUrl < ActiveRecord::Base
   # Validates whether the value of the specified attributes are unique across the system.
@@ -24,7 +26,7 @@ end
 post '/' do
   @short_url = ShortenedUrl.find_or_create_by_url(params[:url])
   if @short_url.valid?
-    haml :success
+    haml :success, :locals => { :address => settings.address }
   else
     haml :index
   end
