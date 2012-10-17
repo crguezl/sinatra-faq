@@ -10,7 +10,10 @@ class ShortenedUrl < ActiveRecord::Base
   # Validates that the specified attributes are not blank
   validates_presence_of :url
   #validates_format_of :url, :with => /.*/
-  validates_format_of :url, :with => %r{^(https?|ftp)://.+}i, :allow_blank => true, :message => "The URL must start with http://, https://, or ftp:// ."
+  validates_format_of :url, 
+       :with => %r{^(https?|ftp)://.+}i, 
+       :allow_blank => true, 
+       :message => "The URL must start with http://, https://, or ftp:// ."
 end
 
 
