@@ -1,8 +1,11 @@
 SCREENCASTS
 A URL shortener in Ruby with Sinatra
 
-https://github.com/janko-m/sinatra-activerecord
-http://screencasts.org/episodes/activerecord-with-sinatra
+the gem sinatra-activerecord is in github:
+     https://github.com/janko-m/sinatra-activerecord
+
+This rep follows the description given in the following screencast:
+  http://screencasts.org/episodes/activerecord-with-sinatra
 
 
 See also:
