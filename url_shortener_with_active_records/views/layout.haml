@@ -1,8 +1,21 @@
-!!!
 %html
-    %body
-        =yield
-        %form(action="/" method="POST")
-            %label(for="url")
-            %input(type="text" name="url" id="url" accesskey="s")
-            %input(type="submit" value="Shorten")
+	%head
+		%title URL Shortener
+		%link(rel="stylesheet" type="text/css" href="style.css")
+		%link(rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css")
+	%body
+		%div(class="content")
+			%h1 URL Shortener in Sinatra
+			%hr
+			%br
+			%a(class="btn btn-small" href="/show")Show stored URLs
+			%a(class="btn btn-small" href="/")Hide URLs
+			%a(class="btn btn-small" href="/search")Look for ShortURL
+			%br
+			%br
+			%form(action="/" method="POST")
+				%label(for="url") URL
+				%input(type="text" name="url" id="url" accesskey="s")
+				%br
+				%input(type="submit" value="Shorten" class="btn btn-primary")
+			=yield

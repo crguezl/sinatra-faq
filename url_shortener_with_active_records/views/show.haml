@@ -1,0 +1,14 @@
+%hr
+%h2 Shortened URL list
+%table
+	%tr
+		%td
+			%h3 Real URL
+		%td
+			%h3 Shortened URL
+	-@list.each do |i|
+		%tr
+			%td
+				%a(href="#{i[0]}")#{i[0]} 
+			%td
+				%a(href="http://localhost:4567/#{i[1].id}")http://localhost:4567/#{i[1].id}

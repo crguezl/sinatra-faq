@@ -1,0 +1,17 @@
+%hr
+%h2 Search Form
+%br
+%form(action="/search" method="POST")
+	%label(for="shorturl") Shortened URL
+	%input(type="text" name="shorturl" id="shorturl" accesskey="s")
+	%br
+	%input(type="submit" value="Search" class="btn btn-primary")
+-if @result
+	-if @result.class != String
+		%p 
+			The real URL for 
+			%strong #{settings.address}/#{params[:shorturl]} 
+			is:
+		%a(href="#{@result.url}")#{@result.url}
+	-else
+		%p Couldn't find the specified short URL in the database.

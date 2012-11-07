@@ -3,8 +3,8 @@ require 'sinatra/activerecord'
 require 'haml'
 
 set :database, 'sqlite3:///shortened_urls.db'
-#set :address, 'localhost:4567'
-set :address, 'exthost.etsii.ull.es:4567'
+set :address, 'localhost:4567'
+#set :address, 'exthost.etsii.ull.es:4567'
 
 class ShortenedUrl < ActiveRecord::Base
   # Validates whether the value of the specified attributes are unique across the system.
@@ -23,6 +23,24 @@ get '/' do
   haml :index
 end
 
+get '/show' do
+  urls = ShortenedUrl.find(:all)
+  @list = []
+  urls.each do |i|
+    @list.push([i.url, i])
+  end
+  haml :show
+end
+
+get '/search' do
+  haml :search
+end
+
+get '/:shortened' do
+  short_url = ShortenedUrl.find(params[:shortened].to_i(36))
+  redirect short_url.url
+end
+
 post '/' do
   @short_url = ShortenedUrl.find_or_create_by_url(params[:url])
   if @short_url.valid?
@@ -32,7 +50,11 @@ post '/' do
   end
 end
 
-get '/:shortened' do
-  short_url = ShortenedUrl.find(params[:shortened].to_i(36))
-  redirect short_url.url
+post '/search' do
+  begin
+    @result = ShortenedUrl.find(params[:shorturl])
+  rescue
+    @result = "Couldn't find the specified short URL" 
+  end
+  haml :search
 end

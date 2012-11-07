@@ -1,0 +1,13 @@
+.content {
+	margin-top: 10px;
+	width: 45%;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #ddd;
+	padding: 15px;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+}
+h1, h2, h3 {
+	text-align: center;
+}
